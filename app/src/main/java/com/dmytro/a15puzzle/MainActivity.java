@@ -1,4 +1,5 @@
 package com.dmytro.a15puzzle;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.View;
@@ -9,7 +10,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
 public class MainActivity extends AppCompatActivity {
     private GridLayout gridLayout;
     private TextView timerTextView, winMessage;
@@ -17,6 +17,7 @@ public class MainActivity extends AppCompatActivity {
     private CountDownTimer countDownTimer;
     private boolean isGameStarted = false;
     private long startTime;
+    private int moveCount = 0;
     private List<Button> buttonList = new ArrayList<>();
     private Integer[] puzzle = new Integer[16];
     @Override
@@ -86,6 +87,7 @@ public class MainActivity extends AppCompatActivity {
         if (isAdjacent(clickedIndex, emptyIndex)) {
             puzzle[emptyIndex] = puzzle[clickedIndex];
             puzzle[clickedIndex] = 0;
+            moveCount++;
             updateButtons();
             if (isWinningState()) {
                 stopGame();
@@ -128,5 +130,10 @@ public class MainActivity extends AppCompatActivity {
     private void stopGame() {
         isGameStarted = false;
         countDownTimer.cancel();
+        Intent intent = new Intent(MainActivity.this, GameInfoActivity.class);
+        long elapsedTime = System.currentTimeMillis() - startTime;
+        intent.putExtra("elapsedTime", elapsedTime);
+        intent.putExtra("moveCount", moveCount);
+        startActivity(intent);
     }
 }
