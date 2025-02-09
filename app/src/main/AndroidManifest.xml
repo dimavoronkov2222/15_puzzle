@@ -20,5 +20,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".GameInfoActivity" android:exported="true" />
+        <activity android:name=".SettingsActivity" />
     </application>
 </manifest>
